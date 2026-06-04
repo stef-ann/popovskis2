@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle load visibility immediately for the first section
     setTimeout(() => {
-        if(sections[0]) sections[0].classList.add('visible');
+        if (sections[0]) sections[0].classList.add('visible');
     }, 100);
 
 
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const navObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if(entry.isIntersecting) {
+            if (entry.isIntersecting) {
                 const currentId = entry.target.getAttribute('id');
                 navLinks.forEach(link => {
                     link.classList.remove('active');
@@ -71,14 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Instead of locked jumps, we map the rotation directly to the scroll distance
     // We listen to the native scroll event of the scroll container
     let scrollPos = 0;
-    
+
     fullpage.addEventListener('scroll', () => {
         scrollPos = fullpage.scrollTop;
-        
+
         // Calculate rotation degrees based on scroll. 
         // 0.2 is the rotation speed factor. Adjust as needed.
-        const rotationDegrees = scrollPos * 0.25; 
-        
+        const rotationDegrees = scrollPos * 0.25;
+
         if (gearImage) {
             gearImage.style.transform = `rotate(${rotationDegrees}deg)`;
         }
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const targetId = link.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
-            
+
             if (targetSection) {
                 // Smoothly scroll the container to the actual offset inside the fullpage container
                 fullpage.scrollTo({
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         timeEl.textContent = timeString;
     }
-    
+
     // Initial call and set interval
     updateClock();
     setInterval(updateClock, 1000);
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
             const data = await res.json();
-            
+
             if (data && data.current_weather) {
                 const temp = Math.round(data.current_weather.temperature);
                 weatherText.textContent = `${temp}°C`;
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             // Find the closest tab group
             const tabsContainer = btn.closest('.skills-tabs');
-            
+
             // Remove active from all buttons in this specific tab container
             if (tabsContainer) {
                 tabsContainer.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -188,10 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Get target content area
             const targetId = btn.getAttribute('data-target');
             const targetContent = document.getElementById(targetId);
-            
+
             if (targetContent) {
                 const contentArea = targetContent.parentElement;
-                
+
                 // Remove active from all grids in the matching content area
                 Array.from(contentArea.children).forEach(child => child.classList.remove('active'));
 
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileMenuBtn && navLinksList) {
         mobileMenuBtn.addEventListener('click', () => {
             navLinksList.classList.toggle('active');
-            
+
             // Toggle icon between menu and x
             if (navLinksList.classList.contains('active')) {
                 mobileMenuIcon.setAttribute('data-lucide', 'x');
@@ -240,15 +240,15 @@ document.addEventListener('DOMContentLoaded', () => {
         projectItems.forEach(item => {
             item.addEventListener('click', () => {
                 const contentClone = item.cloneNode(true);
-                
+
                 modalBody.innerHTML = '';
-                
+
                 // Re-build layout for modal
                 const img = contentClone.querySelector('img');
                 const h3 = contentClone.querySelector('h3');
                 const strong = contentClone.querySelector('strong'); // usually the subtitle
                 const ps = contentClone.querySelectorAll('p'); // The rest of the descriptions
-                
+
                 if (img) {
                     const newImg = img.cloneNode();
                     newImg.style.width = '100%';
@@ -263,14 +263,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     subtitle.textContent = strong.textContent;
                     modalBody.appendChild(subtitle);
                 }
-                
+
                 // Append all paragraphs that aren't the strong one
                 ps.forEach(p => {
                     if (!p.querySelector('strong')) {
                         modalBody.appendChild(p.cloneNode(true));
                     }
                 });
-                
+
                 // Render expanded details from data-details attribute
                 const detailsHTML = item.getAttribute('data-details');
                 if (detailsHTML) {
@@ -286,6 +286,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Handle clicking images inside modal to open in lightbox
+        modalBody.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG') {
+                const clickedImg = e.target;
+                const allModalImgs = Array.from(modalBody.querySelectorAll('img'));
+                const imagesArray = allModalImgs.map(img => ({
+                    src: img.getAttribute('src'),
+                    alt: img.getAttribute('alt') || ''
+                }));
+                const index = allModalImgs.indexOf(clickedImg);
+                if (index !== -1) {
+                    openLightbox(index, imagesArray);
+                }
+            }
+        });
+
         // Close logic
         const closeModal = () => {
             modal.classList.remove('show');
@@ -297,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
-        
+
         // Escape key to close
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.classList.contains('show')) {
@@ -308,10 +324,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 9. Language Localization ---
     const langBtns = document.querySelectorAll('.lang-btn');
-    
+
     function setLanguage(lang) {
         if (!window.translations || !window.translations[lang]) return;
-        
+
         // Update active class on buttons
         langBtns.forEach(btn => {
             if (btn.getAttribute('data-lang') === lang) {
@@ -523,7 +539,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            item.addEventListener('click', () => openLightbox(index));
+            const activePhotos = [...currentFilteredPhotos];
+            item.addEventListener('click', () => openLightbox(index, activePhotos));
             galleryGrid.appendChild(item);
         });
     }
@@ -539,8 +556,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Lightbox controls
-    function openLightbox(index) {
-        if (!lightbox || currentFilteredPhotos.length === 0) return;
+    function openLightbox(index, photosArray = null) {
+        if (!lightbox) return;
+        if (photosArray) {
+            currentFilteredPhotos = photosArray;
+        }
+        if (currentFilteredPhotos.length === 0) return;
         currentLightboxIndex = index;
         updateLightbox();
         lightbox.classList.add('show');
@@ -552,7 +573,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeLightbox() {
         if (!lightbox) return;
         lightbox.classList.remove('show');
-        document.body.style.overflow = 'auto';
+        // Only restore body overflow to auto if the project modal is not open
+        if (!modal || !modal.classList.contains('show')) {
+            document.body.style.overflow = 'auto';
+        }
     }
 
     function updateLightbox() {
@@ -593,5 +617,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize gallery
     initGallery();
+
+    // --- 12. Spotify Lanyard Widget Logic ---
+    const DISCORD_ID = "375297099023122433"; // Replace with your Discord User ID (e.g. "123456789012345678")
+    const spotifyCard = document.getElementById('spotify-card');
+    const spotifyStatusText = document.getElementById('spotify-status-text');
+    const spotifyArt = document.getElementById('spotify-art');
+    const spotifyArtFallback = document.getElementById('spotify-art-fallback');
+    const spotifyTrack = document.getElementById('spotify-track');
+    const spotifyArtist = document.getElementById('spotify-artist');
+
+    async function updateSpotifyStatus() {
+        if (!spotifyCard || DISCORD_ID === "375297099023122433") return;
+
+        try {
+            const res = await fetch(`https://api.lanyard.rest/v1/users/${375297099023122433}`);
+            const json = await res.json();
+
+            if (json.success && json.data) {
+                const data = json.data;
+
+                if (data.listening_to_spotify && data.spotify) {
+                    const spotify = data.spotify;
+
+                    // Update track info
+                    spotifyTrack.textContent = spotify.song;
+                    spotifyArtist.textContent = spotify.artist;
+
+                    // Update album art
+                    if (spotify.album_art_url) {
+                        spotifyArt.src = spotify.album_art_url;
+                        spotifyArt.style.display = 'block';
+                        spotifyArtFallback.style.display = 'none';
+                    } else {
+                        spotifyArt.style.display = 'none';
+                        spotifyArtFallback.style.display = 'flex';
+                    }
+
+                    // Update states & status
+                    spotifyCard.classList.add('playing');
+                    spotifyStatusText.textContent = 'PLAYING';
+                } else {
+                    // Reset to offline state
+                    resetSpotifyWidget();
+                }
+            } else {
+                resetSpotifyWidget();
+            }
+        } catch (error) {
+            console.error("Lanyard Spotify API fetch failed:", error);
+            resetSpotifyWidget();
+        }
+    }
+
+    function resetSpotifyWidget() {
+        if (!spotifyCard) return;
+        spotifyTrack.textContent = 'Not Listening';
+        spotifyArtist.textContent = 'Spotify';
+        spotifyArt.style.display = 'none';
+        spotifyArtFallback.style.display = 'flex';
+        spotifyCard.classList.remove('playing');
+        spotifyStatusText.textContent = 'OFFLINE';
+    }
+
+    // Only run the fetch loop if a valid Discord User ID is set
+    if (DISCORD_ID !== "375297099023122433") {
+        updateSpotifyStatus();
+        setInterval(updateSpotifyStatus, 10000); // Polling every 10 seconds
+    } else {
+        console.log("Spotify Widget: Please replace DISCORD_ID in script.js with your Discord ID to enable live Spotify tracking.");
+    }
 
 });

@@ -92,7 +92,27 @@ window.galleryConfig = {
             src: 'gallery/DSCF0920-2-cropped.png',
             alt: 'Charleston, SC, USA',
             category: 'architecture',
-        }
+        },
+        {
+            src: 'gallery/ski1.JPEG',
+            alt: 'Val Thorens ',
+            category: 'skiing',
+        },
+        {
+            src: 'gallery/ski2.JPEG',
+            alt: 'Val Thorens ',
+            category: 'skiing',
+        },
+        {
+            src: 'gallery/ski3.JPEG',
+            alt: 'Val Thorens ',
+            category: 'skiing',
+        },
+        {
+            src: 'gallery/ski4.JPEG',
+            alt: 'Val Thorens ',
+            category: 'skiing',
+        },
 
 
     ]
